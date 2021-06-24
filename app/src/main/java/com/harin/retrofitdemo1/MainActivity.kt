@@ -1,6 +1,7 @@
 package com.harin.retrofitdemo1
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -32,15 +33,12 @@ class MainActivity : AppCompatActivity() {
         val viewFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewFactory).get(MainViewModel::class.java)
 
-        var params: HashMap<String, String> = HashMap()
-        params["_sort"] = "id"
-        params["_order"] = "desc"
+        viewModel.pushPost1(2, 1, "Harin", "Android Developer")
 
-        viewModel.getPost5(2, params)
-
-        viewModel.post5Response.observe(this, Observer {
+        viewModel.pushPost1Response.observe(this, Observer {
             if (it.isSuccessful) {
-                it.body()?.let { it1 -> adapter.setItems(it1) }
+                it.body()?.let { it1 ->
+                    Log.d("response", it1.title)}
             } else {
                 Toast.makeText(this@MainActivity, it.code().toString(), Toast.LENGTH_SHORT).show()
             }

@@ -9,32 +9,36 @@ import com.harin.retrofitdemo1.repository.Repository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class MainViewModel(private val repository: Repository): ViewModel() {
+class MainViewModel(private val repository: Repository) : ViewModel() {
 
     var response: MutableLiveData<Post> = MutableLiveData()
     var postResponse: MutableLiveData<Response<Post>> = MutableLiveData()
     var post2Response: MutableLiveData<Response<Post>> = MutableLiveData()
-    var post3Response: MutableLiveData<Response<List<Post>>> = MutableLiveData<Response<List<Post>>>()
-    var post4Response: MutableLiveData<Response<List<Post>>> = MutableLiveData<Response<List<Post>>>()
-    var post5Response: MutableLiveData<Response<List<Post>>> = MutableLiveData<Response<List<Post>>>()
+    var post3Response: MutableLiveData<Response<List<Post>>> =
+        MutableLiveData<Response<List<Post>>>()
+    var post4Response: MutableLiveData<Response<List<Post>>> =
+        MutableLiveData<Response<List<Post>>>()
+    var post5Response: MutableLiveData<Response<List<Post>>> =
+        MutableLiveData<Response<List<Post>>>()
+    var pushPost1Response: MutableLiveData<Response<Post>> = MutableLiveData<Response<Post>>()
 
-    private var isProcess : MutableLiveData<Boolean> = MutableLiveData()
+    private var isProcess: MutableLiveData<Boolean> = MutableLiveData()
     private var showProgress: LiveData<Boolean> = isProcess
 
-    fun isShowProgress(): LiveData<Boolean>{
-       return showProgress
+    fun isShowProgress(): LiveData<Boolean> {
+        return showProgress
     }
 
-    fun getPost(){
+    fun getPost() {
         isProcess.value = true
         viewModelScope.launch {
-           val post = repository.getPost()
+            val post = repository.getPost()
             isProcess.value = false
             response.value = post
         }
     }
 
-    fun getPostResponse(){
+    fun getPostResponse() {
         isProcess.value = true
         viewModelScope.launch {
             val response = repository.getPostResponse()
@@ -43,7 +47,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
         }
     }
 
-    fun getPost2(id: Int){
+    fun getPost2(id: Int) {
         viewModelScope.launch {
             isProcess.value = true
             val p2Response = repository.getPost2(id)
@@ -52,7 +56,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
         }
     }
 
-    fun getPost3(userId: Int){
+    fun getPost3(userId: Int) {
         viewModelScope.launch {
             isProcess.value = true
             val p3Response = repository.getPost3(userId)
@@ -61,7 +65,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
         }
     }
 
-    fun getPost4(userId: Int, id: Int){
+    fun getPost4(userId: Int, id: Int) {
         viewModelScope.launch {
             isProcess.value = true
             val p4Response = repository.getPost4(userId, id)
@@ -70,12 +74,21 @@ class MainViewModel(private val repository: Repository): ViewModel() {
         }
     }
 
-    fun getPost5(userId: Int, params: Map<String, String>){
+    fun getPost5(userId: Int, params: Map<String, String>) {
         viewModelScope.launch {
             isProcess.value = true
             val p5Response = repository.getPost5(userId, params)
             isProcess.value = false
             post5Response.value = p5Response
+        }
+    }
+
+    fun pushPost1(userId: Int, id: Int, title: String, body: String) {
+        viewModelScope.launch {
+            isProcess.value = true
+            val pp1Response = repository.pushPost1(userId, id, title, body)
+            isProcess.value = false
+            pushPost1Response.value = pp1Response
         }
     }
 

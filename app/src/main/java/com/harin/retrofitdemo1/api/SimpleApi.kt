@@ -2,10 +2,7 @@ package com.harin.retrofitdemo1.api
 
 import com.harin.retrofitdemo1.model.Post
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
+import retrofit2.http.*
 
 interface SimpleApi {
 
@@ -32,4 +29,9 @@ interface SimpleApi {
     // get list using QueryMap
     @GET("posts")
     suspend fun getPost5(@Query("userId") userId: Int, @QueryMap params: Map<String, String>): Response<List<Post>>
+
+    @FormUrlEncoded
+    @POST("posts")
+    suspend fun pushPost1(@Field("userId") userId: Int, @Field("id") id: Int,
+        @Field("title") title: String, @Field("body") body: String): Response<Post>
 }
