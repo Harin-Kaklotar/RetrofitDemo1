@@ -23,4 +23,8 @@ interface SimpleApi {
     // get list using custom query params
     @GET("posts")
     suspend fun getPost3(@Query("userId") userId: Int): Response<List<Post>>
+
+    // get list using custom multiple query params
+    @GET("posts")
+    suspend fun getPost4(@Query("userId") userId: Int, @Query("id") id: Int): Response<List<Post>>
 }

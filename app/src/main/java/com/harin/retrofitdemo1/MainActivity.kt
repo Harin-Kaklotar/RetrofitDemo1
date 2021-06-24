@@ -34,19 +34,19 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewFactory).get(MainViewModel::class.java)
 
         btnGet.setOnClickListener {
+            textView.text = ""
             var id = etId.text.toString()
-            viewModel.getPost3( id.toInt())
+            viewModel.getPost4( id.toInt(), 1)
         }
 
-        viewModel.post3Response.observe(this, Observer { it ->
+        viewModel.post4Response.observe(this, Observer { it ->
             if (it.isSuccessful) {
-                textView.text = "total results: ${it.body()?.size}"
+                textView.text = "success"
                 it.body()?.forEach {
                     Log.d("response", "id : ${it.id}")
                     Log.d("response", "userId : ${it.userId}")
                     Log.d("response", "title : ${it.title}")
                     Log.d("response", "body : ${it.body}")
-                    Log.d("response", "-------------------------")
                 }
             }else {
                 textView.text = it.code().toString()
