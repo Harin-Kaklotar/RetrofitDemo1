@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harin.retrofitdemo1.adapter.MyAdapter
+import com.harin.retrofitdemo1.model.Post
 import com.harin.retrofitdemo1.repository.Repository
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +34,10 @@ class MainActivity : AppCompatActivity() {
         val viewFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewFactory).get(MainViewModel::class.java)
 
-        viewModel.pushPost1(2, 1, "Harin", "Android Developer")
+        var post = Post(1,1,"Harin Kaklotar", "Android Developer")
+
+
+        viewModel.pushPost2(post)
 
         viewModel.pushPost1Response.observe(this, Observer {
             if (it.isSuccessful) {

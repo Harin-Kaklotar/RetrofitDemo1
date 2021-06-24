@@ -36,4 +36,8 @@ class Repository {
     ): Response<Post> {
         return RetrofitInstance.api.pushPost1(userId, id, title, body)
     }
+
+    suspend fun pushPost2(post: Post): Response<Post> {
+        return RetrofitInstance.api.pushPost2(post)
+    }
 }

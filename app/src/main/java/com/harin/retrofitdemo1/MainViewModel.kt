@@ -92,6 +92,15 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    fun pushPost2(post: Post) {
+        viewModelScope.launch {
+            isProcess.value = true
+            val pp1Response = repository.pushPost2(post)
+            isProcess.value = false
+            pushPost1Response.value = pp1Response
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
     }

@@ -34,4 +34,7 @@ interface SimpleApi {
     @POST("posts")
     suspend fun pushPost1(@Field("userId") userId: Int, @Field("id") id: Int,
         @Field("title") title: String, @Field("body") body: String): Response<Post>
+
+    @POST("posts")
+    suspend fun pushPost2(@Body post: Post): Response<Post>
 }
