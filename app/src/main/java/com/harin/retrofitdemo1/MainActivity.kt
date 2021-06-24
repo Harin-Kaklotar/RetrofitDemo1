@@ -32,14 +32,12 @@ class MainActivity : AppCompatActivity() {
         val viewFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewFactory).get(MainViewModel::class.java)
 
-//        viewModel.getPost()
-//        viewModel.response.observe(this, Observer {
-//            textView.text = it.title
-//        })
+        btnGet.setOnClickListener {
+            var id = etId.text.toString()
+            viewModel.getPost2( id.toInt())
+        }
 
-        viewModel.getPostResponse()
-
-        viewModel.postResponse.observe(this, Observer {
+        viewModel.post2Response.observe(this, Observer {
             if (it.isSuccessful) {
                 textView.text = it.body()!!.title
                 textView.append("\n")

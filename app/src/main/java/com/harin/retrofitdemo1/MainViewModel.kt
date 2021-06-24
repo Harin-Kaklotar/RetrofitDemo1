@@ -42,7 +42,9 @@ class MainViewModel(private val repository: Repository): ViewModel() {
 
     fun getPost2(id: Int){
         viewModelScope.launch {
+            isProcess.value = true
             val p2Response = repository.getPost2(id)
+            isProcess.value = false
             post2Response.value = p2Response
         }
     }
