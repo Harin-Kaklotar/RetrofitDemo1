@@ -17,4 +17,8 @@ class Repository {
     suspend fun getPost2(id: Int): Response<Post>{
         return RetrofitInstance.api.getPost2(id)
     }
+
+    suspend fun getPost3(userId: Int): Response<List<Post>>{
+        return RetrofitInstance.api.getPost3(userId)
+    }
 }

@@ -2,6 +2,7 @@ package com.harin.retrofitdemo1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -34,14 +35,19 @@ class MainActivity : AppCompatActivity() {
 
         btnGet.setOnClickListener {
             var id = etId.text.toString()
-            viewModel.getPost2( id.toInt())
+            viewModel.getPost3( id.toInt())
         }
 
-        viewModel.post2Response.observe(this, Observer {
+        viewModel.post3Response.observe(this, Observer { it ->
             if (it.isSuccessful) {
-                textView.text = it.body()!!.title
-                textView.append("\n")
-                textView.append(it.body()!!.body)
+                textView.text = "total results: ${it.body()?.size}"
+                it.body()?.forEach {
+                    Log.d("response", "id : ${it.id}")
+                    Log.d("response", "userId : ${it.userId}")
+                    Log.d("response", "title : ${it.title}")
+                    Log.d("response", "body : ${it.body}")
+                    Log.d("response", "-------------------------")
+                }
             }else {
                 textView.text = it.code().toString()
             }

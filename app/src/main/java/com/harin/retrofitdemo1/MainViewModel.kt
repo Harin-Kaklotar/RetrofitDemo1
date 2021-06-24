@@ -14,6 +14,7 @@ class MainViewModel(private val repository: Repository): ViewModel() {
     var response: MutableLiveData<Post> = MutableLiveData()
     var postResponse: MutableLiveData<Response<Post>> = MutableLiveData()
     var post2Response: MutableLiveData<Response<Post>> = MutableLiveData()
+    var post3Response: MutableLiveData<Response<List<Post>>> = MutableLiveData<Response<List<Post>>>()
 
     private var isProcess : MutableLiveData<Boolean> = MutableLiveData()
     private var showProgress: LiveData<Boolean> = isProcess
@@ -46,6 +47,15 @@ class MainViewModel(private val repository: Repository): ViewModel() {
             val p2Response = repository.getPost2(id)
             isProcess.value = false
             post2Response.value = p2Response
+        }
+    }
+
+    fun getPost3(userId: Int){
+        viewModelScope.launch {
+            isProcess.value = true
+            val p3Response = repository.getPost3(userId)
+            isProcess.value = false
+            post3Response.value = p3Response
         }
     }
 
