@@ -36,17 +36,23 @@ class MainActivity : AppCompatActivity() {
         btnGet.setOnClickListener {
             textView.text = ""
             var id = etId.text.toString()
-            viewModel.getPost4( id.toInt(), 1)
+
+            var params: HashMap<String, String> = HashMap()
+            params["_sort"] = "id"
+            params["_order"] = "desc"
+
+            viewModel.getPost5( id.toInt(), params)
         }
 
-        viewModel.post4Response.observe(this, Observer { it ->
+        viewModel.post5Response.observe(this, Observer { it ->
             if (it.isSuccessful) {
-                textView.text = "success"
+                textView.text = "success : ${it.body()?.size}"
                 it.body()?.forEach {
                     Log.d("response", "id : ${it.id}")
                     Log.d("response", "userId : ${it.userId}")
                     Log.d("response", "title : ${it.title}")
                     Log.d("response", "body : ${it.body}")
+                    Log.d("response", "---------------------")
                 }
             }else {
                 textView.text = it.code().toString()

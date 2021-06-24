@@ -26,4 +26,7 @@ class Repository {
         return RetrofitInstance.api.getPost4(userId, id)
     }
 
+    suspend fun getPost5(userId: Int, params: Map<String, String>): Response<List<Post>>{
+        return RetrofitInstance.api.getPost5(userId, params)
+    }
 }

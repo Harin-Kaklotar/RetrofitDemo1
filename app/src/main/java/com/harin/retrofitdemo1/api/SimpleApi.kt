@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface SimpleApi {
 
@@ -27,4 +28,8 @@ interface SimpleApi {
     // get list using custom multiple query params
     @GET("posts")
     suspend fun getPost4(@Query("userId") userId: Int, @Query("id") id: Int): Response<List<Post>>
+
+    // get list using QueryMap
+    @GET("posts")
+    suspend fun getPost5(@Query("userId") userId: Int, @QueryMap params: Map<String, String>): Response<List<Post>>
 }
