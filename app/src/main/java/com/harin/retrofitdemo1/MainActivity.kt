@@ -1,71 +1,64 @@
 package com.harin.retrofitdemo1
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.harin.retrofitdemo1.adapter.MyAdapter
 import com.harin.retrofitdemo1.repository.Repository
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var etId: EditText
-    private lateinit var btnGet: Button
-    private lateinit var textView: TextView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+
+    private lateinit var adapter: MyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        etId = findViewById(R.id.et_id)
-        btnGet = findViewById(R.id.button)
-        textView = findViewById(R.id.textView)
+        recyclerView = findViewById(R.id.recyclerView)
         progressBar = findViewById(R.id.progressBar)
+
+        initRecyclerView()
 
         val repository = Repository();
         val viewFactory = MainViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewFactory).get(MainViewModel::class.java)
 
-        btnGet.setOnClickListener {
-            textView.text = ""
-            var id = etId.text.toString()
+        var params: HashMap<String, String> = HashMap()
+        params["_sort"] = "id"
+        params["_order"] = "desc"
 
-            var params: HashMap<String, String> = HashMap()
-            params["_sort"] = "id"
-            params["_order"] = "desc"
+        viewModel.getPost5(2, params)
 
-            viewModel.getPost5( id.toInt(), params)
-        }
-
-        viewModel.post5Response.observe(this, Observer { it ->
+        viewModel.post5Response.observe(this, Observer {
             if (it.isSuccessful) {
-                textView.text = "success : ${it.body()?.size}"
-                it.body()?.forEach {
-                    Log.d("response", "id : ${it.id}")
-                    Log.d("response", "userId : ${it.userId}")
-                    Log.d("response", "title : ${it.title}")
-                    Log.d("response", "body : ${it.body}")
-                    Log.d("response", "---------------------")
-                }
-            }else {
-                textView.text = it.code().toString()
+                it.body()?.let { it1 -> adapter.setItems(it1) }
+            } else {
+                Toast.makeText(this@MainActivity, it.code().toString(), Toast.LENGTH_SHORT).show()
             }
         })
 
         viewModel.isShowProgress().observe(this, Observer {
-            if(it){
+            if (it) {
                 progressBar.visibility = View.VISIBLE
-            }else{
+            } else {
                 progressBar.visibility = View.GONE
             }
         })
+    }
+
+    private fun initRecyclerView() {
+        adapter = MyAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
     }
 
 }
